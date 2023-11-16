@@ -1,66 +1,16 @@
-def powSum(temp, N):
-    
-    result = 0
-    
-    for nmbr in temp:
-        result += int(math.pow(nmbr, N))
-    
-    return result
+x = int(input())
+n = int(input())
 
-def findAllDecompositions(X, N, upperBound, powSet, counter, result):
-    if not powSet:
-        result.append(counter)
-        return 
+def rec(x,n,start):
+    count = 0 
+    for i in range(start,x):
+        ans = x-i**n
+        if ans == 0:
+            count += 1
+        if ans> 0 :
+            count += rec(ans,n,i+1)
+        if ans<0:
+            continue   
+    return count
     
-    newCounter = counter
-    newPowSet = []
-    
-    for mmbr in powSet:
-        indic = mmbr[-1]
-        
-        for nmbr in range(indic+1, upperBound+1):
-            temp = []
-            temp.extend(mmbr)
-            temp.append(nmbr)
-            
-            tempSum = powSum(temp, N)
-            
-            if tempSum == X:
-                newCounter += 1
-            elif tempSum < X:
-                newPowSet.append(temp)
-    
-    
-    findAllDecompositions(X, N, upperBound, newPowSet, newCounter, result)
-
-
-def numberOfAllDecompositions(): 
-    inp = []
-     
-    for line in sys.stdin:
-        inp.append(int(line))
-    
-    X = inp[0]
-    N = inp[1]
-    
-    upperBound = math.floor(math.pow(X, 1/N))
-    powSet = []
-    result = []
-    
-    if X == int(math.pow(upperBound, N)):
-        counter = 1
-    else:
-        counter = 0
-    
-    for i in range(1, upperBound + 1):
-        powSet.append([i])
-    
-    findAllDecompositions(X, N, upperBound, powSet, counter, result)
-    
-    print(result[0]) 
-
-
-    
-
-    
-numberOfAllDecompositions()
+print(rec(x,n,1))
